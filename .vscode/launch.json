@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/cap.js",
+            "program": "${workspaceFolder}/src/cap.js",
             "env": {"MODE": "development"},
             "args": ["node", "cap.js"]
         }

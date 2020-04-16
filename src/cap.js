@@ -2,24 +2,21 @@
 // let incCounter = 0;
 // let outCounter = 0;
 
-const fluentLogger = require('fluent-logger');
 const os = require("os");
 const Cap = require('cap').Cap;
 const decoders = require('cap').decoders;
+const loggers = require('./loggers')
 
 /** Consts */
 const MODES = { DEBUG: 'debug', PROD: 'prod', DEVELOPMENT: 'development' }
 
 /** Environments variables */
 const _IFACE = process.env.IFACE;
-const _IGNOREURLS = process.env.IGNOREURLS;
-const _FLUENTHOST = process.env.FLUENTHOST;
-const _FLUENTPORT = process.env.FLUENTPORT;
-const _FLUENTTAG = process.env.FLUENTTAG || 'k8s-internal-networking';
-const _CAPFILTER = process.env.CAPFILTER || 'tcp'; // `tcp` for all packets
-//const _CAPFILTER = `tcp and dst port 80 or src port 80`;
-const _TIMEOUTINTERVALCHECK = process.env.TIMEOUTINTERVALCHECK || 2000; // every 3 minutes (180000) ms
-const _TIMEOUTAFTERMS = process.env.TIMEOUTAFTERMS || 10000; // 105000 ms = 105 sec
+const _IGNOREURLS = process.env.IGNORE_URLS;
+//const _CAPFILTER = process.env.CAP_FILTER || 'tcp'; // `tcp` for all packets
+const _CAPFILTER = `tcp and dst port 80 or src port 80`;
+const _TIMEOUTINTERVALCHECK = process.env.TIMEOUT_INTERVAL_CHECK || 2000; // every 3 minutes (180000) ms
+const _TIMEOUTAFTERMS = process.env.TIMEOUT_AFTER_MS || 10000; // 105000 ms = 105 sec
 const _MODE = process.env.MODE || MODES.PROD; // DEBUG, PROD, DEVELOPMENT
 
 /** Variables preparation */
@@ -33,36 +30,27 @@ const IFACEOBJ = _IFACE ? Cap.deviceList().filter((i) => i.name === _IFACE)[0] :
 let IFACENAME = IFACEOBJ.name;
 let IFACEADDR = IFACEOBJ.addresses[0].addr;
 if (_MODE === MODES.DEVELOPMENT) {
-    //IFACENAME = 'lo';
+    IFACENAME = 'lo';
     //setInterval(() => console.log(incCounter, outCounter), 3000)
     // setInterval(() => {
     //     console.log(`inc size: ${Object.keys(incReqData).length}`)
     //     console.log(`out size: ${Object.keys(outReqData).length}`)
     // }, 10000)
-    //require('./httpServer');
+    require('./httpServer');
 }
 
 const HOSTNAME = os.hostname();
 const ignoreUrls = _IGNOREURLS ? _IGNOREURLS.split(',') : ['/info', '/health'];
-const fluentPort = _FLUENTPORT ? Number(_FLUENTPORT) : undefined;
 
 /** Configs */
 const linkType = cap.open(IFACENAME, _CAPFILTER, bufSize, buffer);
 cap.setMinBytes && cap.setMinBytes(0);
-
-fluentLogger.configure(_FLUENTTAG, {
-    host: _FLUENTHOST,
-    port: fluentPort,
-    timeout: 3.0,
-    reconnectInterval: 30000 // 10 minutes
-});
 
 /** setup Interval for timeouted requests */
 setInterval(checkTimeoutedRequests(outReqData), _TIMEOUTINTERVALCHECK)
 setInterval(checkTimeoutedRequests(incReqData), _TIMEOUTINTERVALCHECK)
 
 /** Log some infortmation */
-console.log('log to: ' + _FLUENTHOST, fluentPort)
 console.log(`start capture http traffic on iface: ${IFACENAME} with serverAddr: ${IFACEADDR}`)
 console.log(`check timeouted requests every ${_TIMEOUTINTERVALCHECK}ms. timeout request after ${_TIMEOUTAFTERMS}ms`)
 
@@ -81,7 +69,7 @@ function checkTimeoutedRequests(ReqData) {
                 if (resTime >= _TIMEOUTAFTERMS) {
                     req["resTime"] = resTime / 1000
                     req["resCode"] = 408
-                    logReq({ ...req, HOSTNAME });
+                    loggers.logReq({ ...req, HOSTNAME });
                     delete ReqData[reqKey];
                 }
             }
@@ -107,12 +95,7 @@ function getReqData(headers, type) {
 function getResData(headers, req, time) {
     req["resTime"] = (time - req["resTime"]) / 1000
     req["resCode"] = headers[0].split(" ")[1]
-    logReq({ ...req, HOSTNAME });
-}
-
-function logReq(logObj) {
-    fluentLogger.emit('follow', logObj);
-    //console.log(logObj)
+    loggers.logReq({ ...req, HOSTNAME });
 }
 
 /** On packet receive event */
@@ -140,8 +123,8 @@ cap.on('packet', function (nbytes) {
         const headers = payload.split('\r\n\r\n')[0].split('\r\n')
 
         /** it's incoming traffic */
-        //if (dst === `${IFACEADDR}:80`) { // just for test
-        if (dstIP === IFACEADDR) {
+        if (dst === `${IFACEADDR}:80`) { // just for test
+        //if (dstIP === IFACEADDR) {
             const req = outReqData[src];
             /** it's a response */
             if (req) {

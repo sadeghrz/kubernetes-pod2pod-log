@@ -19,11 +19,11 @@ RUN apk update && apk add libpcap-dev
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app .
 
-COPY cap.js .
+#COPY src/cap.js .
 
 # Just for test and development
 # COPY httpServer.js .
 # RUN apk add curl
 # EXPOSE 80
 
-CMD [ "node", "cap.js" ]
+CMD [ "node", "src/cap.js" ]

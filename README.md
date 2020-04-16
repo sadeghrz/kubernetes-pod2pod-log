@@ -1,6 +1,6 @@
 # kubernetes-internal-http-logger
 
-#### A very lightweight sidecar image to log all pod's HTTP traffic for both incoming and outgoing requests
+#### Very lightweight sidecar image to log pod's HTTP traffic for both incoming and outgoing requests
 #### You can easily log all your kubernetes internal networking
 
 ### How it works?
@@ -54,3 +54,24 @@ data:
 </match>
 ```
 ### environments variables you can use in configmap:
+Name | Description | Default value | Allowed values (type)
+--- | --- | --- | ---
+IFACE | 301 | 283 | 345
+IGNORE_URLS | 301 | 283 | 345
+CAP_FILTER | 301 | 283 | 345
+TIMEOUT_INTERVAL_CHECK | 301 | 283 | 345
+TIMEOUT_AFTER_MS | 301 | 283 | 345
+MODE | 301 | 283 | 345
+SEND_LOGS_TO | 301 | 283 | 345
+FLUENTD_HOST | 301 | 283 | 345
+FLUENTD_PORT | 301 | 283 | 345
+FLUENTD_TAG | 301 | 283 | 345
+LOGSTASH_HOST | 301 | 283 | 345
+LOGSTASH_PORT | 301 | 283 | 345
+LOGSTASH_TYPE | 301 | 283 | 345
+ELASTICSEARCH_HOST | 301 | 283 | 345
+ELASTICSEARCH_PORT | 301 | 283 | 345
+ELASTICSEARCH_LOG | 301 | 283 | 345
+ELASTICSEARCH_API_VERSION | 301 | 283 | 345
+ELASTICSEARCH_INDEX | 301 | 283 | 345
+ELASTICSEARCH_TYPE | 301 | 283 | 345
