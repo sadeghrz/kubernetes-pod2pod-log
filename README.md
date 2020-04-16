@@ -13,10 +13,10 @@
 #### 1. add image as a sidecar to your deployment
 ```yaml
 - image: sadeghrz/kubernetes-internal-http-logger
-  name: httpsniffer
+  name: k8s-internal-http-logger
   envFrom:
   - configMapRef:
-      name: httpsniffer-configmap
+      name: k8s-internal-http-logger-configmap
   imagePullPolicy: IfNotPresent
 ```
 
@@ -25,7 +25,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: httpsniffer-configmap
+  name: k8s-internal-http-logger-configmap
 data:
   FLUENTHOST: {YOUR_FLUENTD_ADDRESS}
   FLUENTPORT: {YOUR_FLUENTD_PORT}
