@@ -12,20 +12,12 @@
 ### How to use?
 #### 1. add image as a sidecar to your deployment
 ```yaml
-- image: hub.alibaba.ir/baseimages/httpsniffer:timeouttest-0.0.1
+- image: sadeghrz/kubernetes-internal-http-logger
   name: httpsniffer
-  ports:
-  - containerPort: 80
   envFrom:
   - configMapRef:
       name: httpsniffer-configmap
   imagePullPolicy: IfNotPresent
-
-  volumeMounts:
-  - name: localtime-vol
-    mountPath: /etc/localtime
-  - name: timezone-vol
-    mountPath: /etc/timezone
 ```
 
 #### 2. add configMap to inject ENV variable and set your environments
