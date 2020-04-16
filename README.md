@@ -9,7 +9,8 @@
 - decode packets as HTTP protocol => 
 - send HTTP info (headers, status code, response time, ...) to log server (currently fluentd).
 
-#### add image as sidecar
+### How to use?
+#### 1. add image as a sidecar to your deployment
 ```yaml
 - image: hub.alibaba.ir/baseimages/httpsniffer:timeouttest-0.0.1
   name: httpsniffer
@@ -27,13 +28,37 @@
     mountPath: /etc/timezone
 ```
 
-#### add configmap for inject ENV variable and set your envoiroments
+#### 2. add configMap to inject ENV variable and set your environments
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: httpsniffer-configmap
 data:
-  FLUENTHOST: 192.168.1.2
-  FLUENTPORT: "2423"
+  FLUENTHOST: {YOUR_FLUENTD_ADDRESS}
+  FLUENTPORT: {YOUR_FLUENTD_PORT}
 ```
+
+#### Done!
+
+### example: Fluentd config for elasticsearch:
+```xml
+<source>
+    @type forward
+    port {YOUR_FLUENTD_PORT}
+</source>
+
+<match k8s-internal-networking.**>
+  @type elasticsearch
+  host {YOUR_ELASTCSEARCH_ADDRESS}
+  port {YOUR_ELASTICSEARCH_PORT}
+  logstash_format true
+  logstash_prefix k8s-internal-networking
+  buffer_type memory
+  flush_interval 10s
+  retry_limit 17
+  retry_wait 1.0
+  num_threads 1
+</match>
+```
+### environments variables you can use in configmap:
