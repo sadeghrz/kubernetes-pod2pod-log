@@ -1,5 +1,7 @@
 # Kubernetes pod2pod log
 
+https://github.com/sadeghrz/kubernetes-pod2pod-log
+
 https://hub.docker.com/r/sadeghrz/kubernetes-pod2pod-log
 
 #### Very lightweight sidecar image to log pod to pod HTTP traffic for both incoming and outgoing requests
@@ -80,5 +82,5 @@ ELASTICSEARCH_TYPE | index type | null | string
 #### * highly recommended to use fluentd or logstash for better performance
 
 ### Performance and resource usage:
-##### Benchmarks in real production environments with 500r/s
-![k8s pod2pod performance](/performance.png)
+##### Benchmark in real production environment with 500r/s
+![k8s pod2pod performance](https://github.com/sadeghrz/kubernetes-pod2pod-log/raw/master/performance.png)
