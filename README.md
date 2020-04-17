@@ -81,5 +81,4 @@ ELASTICSEARCH_TYPE | index type | null | string
 
 ### Performance and resource usage:
 ##### Benchmarks in real production environments with 500r/s
-![GitHub Logo](/performance.png)
-Format: ![Alt Text](url)
+Format: ![k8s pod2pod performance](/performance.png)
