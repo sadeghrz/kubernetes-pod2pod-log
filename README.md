@@ -4,7 +4,7 @@ https://github.com/sadeghrz/kubernetes-pod2pod-log
 
 https://hub.docker.com/r/sadeghrz/kubernetes-pod2pod-log
 
-#### Very lightweight sidecar image to log pod to pod HTTP traffic for both incoming and outgoing requests
+#### Lightweight sidecar image to log pod to pod HTTP traffic for both incoming and outgoing requests
 You can easily log all your kubernetes pod to pod http traffic including url, host, body, status code, response time, headers and anything you want!
 
 ### How it works?
