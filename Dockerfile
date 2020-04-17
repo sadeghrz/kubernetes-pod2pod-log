@@ -18,8 +18,7 @@ RUN apk update && apk add libpcap-dev
 
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app .
-
-#COPY src/cap.js .
+COPY src/ ./src/
 
 # Just for test and development
 # COPY httpServer.js .

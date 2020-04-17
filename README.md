@@ -1,23 +1,24 @@
 # Kubernetes pod2pod log
 
-#### Very lightweight sidecar image to log pod's HTTP traffic for both incoming and outgoing requests
-#### You can easily log all your kubernetes internal networking
+https://hub.docker.com/r/sadeghrz/kubernetes-pod2pod-log
+
+#### Very lightweight sidecar image to log pod to pod HTTP traffic for both incoming and outgoing requests
+You can easily log all your kubernetes pod to pod http traffic including url, host, body, status code, response time, headers and anything you want!
 
 ### How it works?
 - Capture all TCP packets on pod's interface => 
-- aggregate packets => 
-- decode packets as HTTP protocol => 
-- send HTTP info (headers, status code, response time, ...) to log server (currently fluentd).
+- Aggregate packets => 
+- Decode packets as HTTP protocol => 
+- Send HTTP info (headers, status code, response time, ...) to log server (currently fluentd).
 
 ### How to use?
-#### 1. add image as a sidecar to your deployment
+#### 1. add pod2pod image as a sidecar to your deployment
 ```yaml
 - image: sadeghrz/kubernetes-pod2pod-log
   name: k8s-pod2pod-log
   envFrom:
   - configMapRef:
       name: k8s-pod2pod-log-configmap
-  imagePullPolicy: IfNotPresent
 ```
 
 #### 2. add configMap to inject ENV variable and set your environments
@@ -77,3 +78,7 @@ ELASTICSEARCH_INDEX | index | k8s-pod2pod-log | string
 ELASTICSEARCH_TYPE | index type | null | string
 
 #### * highly recommended to use fluentd or logstash for better performance
+
+### Performance and resource usage:
+##### Benchmarks in real production environments with 500r/s
+
