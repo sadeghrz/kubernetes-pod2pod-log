@@ -11,7 +11,7 @@ You can easily log all your kubernetes pod to pod http traffic including url, ho
 - Capture all TCP packets on pod's interface => 
 - Aggregate packets => 
 - Decode packets as HTTP protocol => 
-- Send HTTP info (headers, status code, response time, ...) to log server (currently fluentd).
+- Send HTTP info (headers, status code, response time, ...) to log server (Fluentd, Logstash, Elasticsearch or stdout).
 
 ### How to use?
 #### 1. add pod2pod image as a sidecar to your deployment
