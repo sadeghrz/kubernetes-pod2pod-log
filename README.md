@@ -81,4 +81,4 @@ ELASTICSEARCH_TYPE | index type | null | string
 
 ### Performance and resource usage:
 ##### Benchmarks in real production environments with 500r/s
-Format: ![k8s pod2pod performance](/performance.png)
+![k8s pod2pod performance](/performance.png)
