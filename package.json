@@ -1,5 +1,5 @@
 {
-  "name": "k8s-internal-http-logger",
+  "name": "k8s-pod2pod-log",
   "version": "1.0.0",
   "description": "a sidecar image to log all pod's HTTP traffic for both incoming and outgoing requests.",
   "main": "cap.js",

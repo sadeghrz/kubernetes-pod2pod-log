@@ -4,7 +4,7 @@ const _LOGGER_HOST = process.env.ELASTICSEARCH_HOST || 'localhost';
 const _LOGGER_PORT = process.env.ELASTICSEARCH_PORT || 9200;
 const _LOGGER_LOG = process.env.ELASTICSEARCH_LOG || 'trace';
 const _LOGGER_API_VERSION = process.env.ELASTICSEARCH_API_VERSION || '7.2';
-const _LOGGER_INDEX = process.env.ELASTICSEARCH_INDEX || 'k8s-internal-networking';
+const _LOGGER_INDEX = process.env.ELASTICSEARCH_INDEX || 'k8s-pod2pod-log';
 const _LOGGER_TYPE = process.env.ELASTICSEARCH_TYPE;
 const loggerPort = _LOGGER_PORT ? Number(_LOGGER_PORT) : undefined;
 
