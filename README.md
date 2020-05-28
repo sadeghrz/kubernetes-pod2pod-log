@@ -30,8 +30,9 @@ kind: ConfigMap
 metadata:
   name: k8s-pod2pod-log-configmap
 data:
-  FLUENTHOST: {YOUR_FLUENTD_ADDRESS}
-  FLUENTPORT: {YOUR_FLUENTD_PORT}
+  SEND_LOGS_TO: fluentd
+  FLUENTD_HOST: {YOUR_FLUENTD_ADDRESS}
+  FLUENTD_PORT: {YOUR_FLUENTD_PORT}
 ```
 
 #### Done!
