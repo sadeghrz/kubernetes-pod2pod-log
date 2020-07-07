@@ -13,8 +13,7 @@ const MODES = { DEBUG: 'debug', PROD: 'prod', DEVELOPMENT: 'development' }
 /** Environments variables */
 const _IFACE = process.env.IFACE;
 const _IGNOREURLS = process.env.IGNORE_URLS;
-//const _CAPFILTER = process.env.CAP_FILTER || 'tcp'; // `tcp` for all packets
-const _CAPFILTER = `tcp and dst port 80 or src port 80`;
+const _CAPFILTER = process.env.CAP_FILTER || `tcp and dst port 80 or src port 80`; // `tcp` for all packets
 const _TIMEOUTINTERVALCHECK = process.env.TIMEOUT_INTERVAL_CHECK || 2000; // every 3 minutes (180000) ms
 const _TIMEOUTAFTERMS = process.env.TIMEOUT_AFTER_MS || 10000; // 105000 ms = 105 sec
 const _MODE = process.env.MODE || MODES.PROD; // DEBUG, PROD, DEVELOPMENT
