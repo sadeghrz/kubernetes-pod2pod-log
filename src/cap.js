@@ -122,8 +122,8 @@ cap.on('packet', function (nbytes) {
         const headers = payload.split('\r\n\r\n')[0].split('\r\n')
 
         /** it's incoming traffic */
-        if (dst === `${IFACEADDR}:80`) { // just for test
-        //if (dstIP === IFACEADDR) {
+        //if (dst === `${IFACEADDR}:80`) { // just for test
+        if (dstIP === IFACEADDR) {
             const req = outReqData[src];
             /** it's a response */
             if (req) {
