@@ -17,6 +17,7 @@ const _CAPFILTER = process.env.CAP_FILTER || `tcp and dst port 80 or src port 80
 const _TIMEOUTINTERVALCHECK = process.env.TIMEOUT_INTERVAL_CHECK || 2000; // every 3 minutes (180000) ms
 const _TIMEOUTAFTERMS = process.env.TIMEOUT_AFTER_MS || 10000; // 105000 ms = 105 sec
 const _MODE = process.env.MODE || MODES.PROD; // DEBUG, PROD, DEVELOPMENT
+const _LOGHEADERS = process.env.LOGHEADERS != '' ? process.env.LOGHEADERS : false;
 
 /** Variables preparation */
 const cap = new Cap();
@@ -76,7 +77,7 @@ function checkTimeoutedRequests(ReqData) {
     }
 }
 
-function getReqData(headers, type) {
+function getReqDataFromHeaders(headers) {
     const headerObj = {};
     headers.map((h) => {
         const hs = h.split(" ");
@@ -88,7 +89,13 @@ function getReqData(headers, type) {
     const host = headerObj["host:"];
     const method = urlHeader[0]
 
-    return { host, url, method, type }
+    const retObj = { host, url, method }
+
+    if (_LOGHEADERS) {
+        retObj.headers = JSON.stringify(headers)
+    }
+
+    return retObj;
 }
 
 function getResData(headers, req, time) {
@@ -138,8 +145,16 @@ cap.on('packet', function (nbytes) {
                 /** it's untracked response :( */
                 return
             }
-            const reqData = getReqData(headers, 'income');
-            reqData ? incReqData[src] = { resTime: time, ...reqData } : null
+            const reqData = getReqDataFromHeaders(headers);
+            reqData ? incReqData[src] = { 
+                resTime: time, 
+                type: 'income', 
+                srcIP, 
+                srcPort, 
+                dstIP,
+                dstPort,
+                ...reqData 
+            } : null
 
         } else { /** t's outgoing traffic */
             const req = incReqData[dst];
@@ -155,8 +170,16 @@ cap.on('packet', function (nbytes) {
                 /** it's untracked response :( */
                 return
             }
-            const reqData = getReqData(headers, 'outgo');
-            reqData ? outReqData[dst] = { resTime: time, ...reqData } : null
+            const reqData = getReqDataFromHeaders(headers);
+            reqData ? outReqData[dst] = { 
+                resTime: time, 
+                type: 'outgo', 
+                srcIP, 
+                srcPort, 
+                dstIP,
+                dstPort,
+                ...reqData 
+            } : null
         }
     }
 });

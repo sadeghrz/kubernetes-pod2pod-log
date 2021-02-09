@@ -67,6 +67,7 @@ TIMEOUT_INTERVAL_CHECK | check timed out requests interval in milliseconds | 200
 TIMEOUT_AFTER_MS | set requests as timed out request after ... milliseconds | 10000 | number
 MODE | running mode | prod | prod,debug,development
 SEND_LOGS_TO | set log engine | stdout | stdout,fluentd,logstash,elasticsearch
+LOGHEADERS | log all headers or not | false | bool
 FLUENTD_HOST | fluentd host address | localhost | string
 FLUENTD_PORT | fluentd port number | 2123 | number
 FLUENTD_TAG | fluentd tag | k8s-pod2pod-log | string
